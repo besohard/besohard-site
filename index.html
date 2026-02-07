@@ -380,39 +380,52 @@
 </div>
 
 <script>
-async function loadTelegramPosts() {
+async function loadTelegramPosts(){
 
-const rssUrl = "https://api.rss2json.com/v1/api.json?rss_url=https://rsshub.app/telegram/channel/insightyouget";
+const container = document.getElementById("insights-container");
+container.innerHTML = `<p style="opacity:.7">Fetching latest research...</p>`;
 
-try {
-  const res = await fetch(rssUrl);
-  const data = await res.json();
+const url = "https://api.rss2json.com/v1/api.json?rss_url=https://tg.i-c-a.su/rss/insightyouget";
 
-  const container = document.getElementById("insights-container");
-  if(!container) return;
+try{
+ const res = await fetch(url);
+ const data = await res.json();
 
-  container.innerHTML = "";
+ if(!data.items || data.items.length===0) throw "no posts";
 
-  data.items.slice(0,3).forEach(post => {
+ container.innerHTML="";
 
-    const text = post.title.replace(/<[^>]*>/g, '').substring(0,150);
+ data.items.slice(0,4).forEach(post=>{
 
-    const card = document.createElement("a");
-    card.className = "insight-card";
-    card.href = post.link;
-    card.target = "_blank";
+   const clean = post.title.replace(/<[^>]*>/g,'').slice(0,160);
 
-    card.innerHTML = `
-      <h3>${text}</h3>
-      <p>Live update from Telegram channel</p>
-      <div class="readmore">Open in Telegram →</div>
-    `;
+   const card=document.createElement("a");
+   card.className="insight-card";
+   card.href=post.link;
+   card.target="_blank";
 
-    container.appendChild(card);
-  });
+   card.innerHTML=`
+     <h3>${clean}</h3>
+     <p>Published on Telegram channel</p>
+     <div class="card-footer">
+       <span>Live Feed</span>
+       <span class="readtime">Auto Sync</span>
+     </div>
+     <div class="readmore">Open Post →</div>
+   `;
 
-} catch (err) {
-  console.log("Feed error:", err);
+   container.appendChild(card);
+ });
+
+}catch(e){
+
+ container.innerHTML=`
+ <div style="opacity:.7">
+ Could not load updates.<br>
+ <a href="https://t.me/insightyouget" target="_blank" style="color:#4ade80">
+ Visit Telegram Channel →
+ </a>
+ </div>`;
 }
 
 }
