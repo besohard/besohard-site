@@ -378,46 +378,47 @@
   
 
 </div>
+
 <script>
+async function loadTelegramPosts() {
 
-window.addEventListener("DOMContentLoaded", function () {
-  fetch('/insights/posts.json')
-    .then(response => response.json())
-    .then(posts => {
-      const container = document.getElementById('insights-container');
-      if (!container) return;
+const rssUrl = "https://api.rss2json.com/v1/api.json?rss_url=https://rsshub.app/telegram/channel/insightyouget";
 
-      posts.slice(0,3).forEach(post => {
+try {
+  const res = await fetch(rssUrl);
+  const data = await res.json();
 
-        // Fake reading time based on description length
-        const words = post.description.split(" ").length;
-        const readTime = Math.max(2, Math.round(words / 120)) + " min read";
+  const container = document.getElementById("insights-container");
+  if(!container) return;
 
-        const card = document.createElement('a');
-        card.className = 'insight-card';
-        card.href = post.link;
+  container.innerHTML = "";
 
-        card.innerHTML = `
-          <h3>${post.title}</h3>
-          <p>${post.description}</p>
+  data.items.slice(0,3).forEach(post => {
 
-          <div class="card-footer">
-            <span class="date">${post.date}</span>
-            <span class="readtime">${readTime}</span>
-          </div>
+    const text = post.title.replace(/<[^>]*>/g, '').substring(0,150);
 
-          <div class="readmore">
-            Read full report →
-          </div>
-        `;
+    const card = document.createElement("a");
+    card.className = "insight-card";
+    card.href = post.link;
+    card.target = "_blank";
 
-        container.appendChild(card);
-      });
-    })
-    .catch(error => console.log("Insights load error:", error));
-});
+    card.innerHTML = `
+      <h3>${text}</h3>
+      <p>Live update from Telegram channel</p>
+      <div class="readmore">Open in Telegram →</div>
+    `;
+
+    container.appendChild(card);
+  });
+
+} catch (err) {
+  console.log("Feed error:", err);
+}
+
+}
+
+loadTelegramPosts();
 </script>
-
 
 
 </body>
