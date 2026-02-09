@@ -3,7 +3,7 @@ backend:
   repo: besohard/besohard-site
   branch: main
   auth_type: pkce
-  app_id: YOUR_CLIENT_ID
+  app_id: Ov23lib5BJqkhml5iMYq
 
 
 media_folder: "assets/uploads"
