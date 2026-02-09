@@ -2,7 +2,11 @@ backend:
   name: github
   repo: besohard/besohard-site
   branch: main
-  client_id: Ov23lib5BJqkhml5iMYq
+  auth_type: implicit
+  app_id: Ov23lib5BJqkhml5iMYq
+
+site_url: https://besohard.com
+display_url: https://besohard.com
 
 media_folder: "assets/uploads"
 public_folder: "/assets/uploads"
@@ -15,6 +19,7 @@ collections:
     slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
     format: "frontmatter"
     extension: "md"
+
     fields:
       - { label: "Title", name: "title", widget: "string" }
       - { label: "Date", name: "date", widget: "datetime" }
