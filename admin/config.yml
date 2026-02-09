@@ -2,26 +2,21 @@ backend:
   name: github
   repo: besohard/besohard-site
   branch: main
-  auth_type: implicit
-  app_id: Ov23lib5BJqkhml5iMYq
-
-site_url: https://besohard.com
-display_url: https://besohard.com
 
 media_folder: "assets/uploads"
 public_folder: "/assets/uploads"
 
+publish_mode: editorial_workflow
+
 collections:
   - name: "insights"
-    label: "Insights Posts"
-    folder: "insights"
+    label: "Insights"
+    folder: "insights/posts"
     create: true
     slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
-    format: "frontmatter"
-    extension: "md"
 
     fields:
       - { label: "Title", name: "title", widget: "string" }
-      - { label: "Date", name: "date", widget: "datetime" }
-      - { label: "Cover", name: "cover", widget: "image", required: false }
-      - { label: "Content", name: "body", widget: "markdown" }
+      - { label: "Publish Date", name: "date", widget: "datetime" }
+      - { label: "Cover Image", name: "image", widget: "image", required: false }
+      - { label: "Body", name: "body", widget: "markdown" }
