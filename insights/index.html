@@ -1,74 +1,75 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Market Insights — Besohard</title>
+  <meta charset="UTF-8" />
+  <title>Insights — Besohard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-<style>
-body{margin:0;font-family:Arial;background:#020617;color:#e5e7eb;}
-.header{padding:22px 24px;border-bottom:1px solid #1f2937;display:flex;justify-content:space-between;}
-.logo{color:#4ade80;text-decoration:none;font-weight:bold;}
-.home{color:#60a5fa;text-decoration:none;}
-.title{text-align:center;margin:50px 0 20px;}
-.grid{max-width:1100px;margin:40px auto;padding:0 20px;display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:26px;}
-.card{background:#0f172a;padding:22px;border-radius:14px;color:white;border:1px solid rgba(255,255,255,.08);}
-.card h3{margin-bottom:10px;}
-.card p{color:#94a3b8;}
-.date{margin-top:14px;color:#4ade80;font-size:13px;}
-</style>
+  <style>
+    body{
+      font-family: Arial, Helvetica, sans-serif;
+      background:#0b0f19;
+      color:#fff;
+      margin:0;
+      padding:40px;
+    }
+
+    h1{
+      text-align:center;
+      margin-bottom:40px;
+    }
+
+    .post{
+      max-width:800px;
+      margin:20px auto;
+      padding:20px;
+      border-radius:12px;
+      background:#111827;
+      transition:.2s;
+    }
+
+    .post:hover{
+      transform:translateY(-3px);
+      background:#1f2937;
+    }
+
+    a{
+      color:#38bdf8;
+      text-decoration:none;
+      font-size:22px;
+      font-weight:bold;
+    }
+
+    .date{
+      opacity:.6;
+      margin-top:8px;
+      font-size:14px;
+    }
+  </style>
 </head>
-
 <body>
 
-<div class="header">
-  <a class="logo" href="/">Besohard Research</a>
-  <a class="home" href="/">Home</a>
-</div>
-
-<div class="title">
-  <h1>Market Insights</h1>
-</div>
-
-<div class="grid" id="posts"></div>
+<h1>Besohard Insights</h1>
+<div id="posts"></div>
 
 <script>
-async function loadPosts() {
+fetch("/insights/index.json")
+.then(res => res.json())
+.then(posts => {
+  const container = document.getElementById("posts");
 
-  const repo = "besohard/besohard-site";
-  const folder = "content/posts";
+  posts.forEach(post => {
+    const div = document.createElement("div");
+    div.className = "post";
 
-  const res = await fetch(`https://api.github.com/repos/${repo}/contents/${folder}`);
-  const files = await res.json();
-
-  const container = document.getElementById('posts');
-  container.innerHTML = "";
-
-  for (const file of files.reverse()) {
-
-    if (!file.name.endsWith(".md")) continue;
-
-    const raw = await fetch(file.download_url);
-    const text = await raw.text();
-
-    const title = text.match(/title:\s*(.*)/)?.[1] || "Untitled";
-    const date = text.match(/date:\s*(.*)/)?.[1] || "";
-    const desc = text.match(/description:\s*(.*)/)?.[1] || "";
-
-    const el = document.createElement('div');
-    el.className = 'card';
-
-    el.innerHTML = `
-      <h3>${title}</h3>
-      <p>${desc}</p>
-      <div class="date">${date}</div>
+    div.innerHTML = `
+      <a href="${post.url}">${post.title}</a>
+      <div class="date">${post.date}</div>
     `;
 
-    container.appendChild(el);
-  }
-}
-
-loadPosts();
+    container.appendChild(div);
+  });
+});
 </script>
 
 </body>
