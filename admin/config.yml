@@ -2,6 +2,9 @@ backend:
   name: github
   repo: besohard/besohard-site
   branch: main
+  auth_type: pkce
+  app_id: YOUR_CLIENT_ID
+
 
 media_folder: "assets/uploads"
 public_folder: "/assets/uploads"
