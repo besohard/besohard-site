@@ -1,1 +1,27 @@
+backend:
+  name: github
+  repo: besohard/besohard-site
+  branch: main
+  auth_scope: repo
+  open_authoring: false
 
+
+
+
+media_folder: "assets/uploads"
+public_folder: "/assets/uploads"
+
+publish_mode: editorial_workflow
+
+collections:
+  - name: "insights"
+    label: "Insights"
+    folder: "insights/posts"
+    create: true
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+
+    fields:
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Publish Date", name: "date", widget: "datetime" }
+      - { label: "Cover Image", name: "image", widget: "image", required: false }
+      - { label: "Body", name: "body", widget: "markdown" }
