@@ -2,6 +2,9 @@ backend:
   name: github
   repo: besohard/besohard-site
   branch: main
+  auth_scope: repo
+  open_authoring: false
+
 
 
 
