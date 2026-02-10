@@ -2,8 +2,6 @@ backend:
   name: github
   repo: besohard/besohard-site
   branch: main
-  base_url: https://besohard.com/api
-  auth_endpoint: oauth
 
 
 
